@@ -1,0 +1,92 @@
+package utilities;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import pages.LoginPage;
+
+public class WebDriverUtils {
+	public static WebDriver driver;
+	
+	  public void setUp(String url) {
+		driver =new ChromeDriver();
+		driver.get(url);
+		System.out.println("Set Up Browser");
+	}
+	  
+	  @SuppressWarnings("deprecation")
+	public void waitSt() {
+		  driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+	  System.out.println("Given implicitWait of 20sec");
+	  }
+	  
+	public void tearDown() {
+		driver.close();
+		System.out.println("tear Up Browser");
+		
+	}
+}
+---------------------------
+package pages;
+
+import org.openqa.selenium.By;
+
+import utilities.WebDriverUtils;
+
+public class LoginPage extends WebDriverUtils{
+
+//xpath 
+	public static By usernameInput = By.name("txtUserName");
+	public static By passwordInput = By.name("txtPassword");
+	public static By loginButton = By.name("Submit");
+
+	public static void enterUsername(String username) {
+		driver.findElement(usernameInput).sendKeys(username);
+		System.out.println("username Entered");
+	}
+
+	public static void enterPassword(String password) {
+		driver.findElement(passwordInput).sendKeys(password);
+		System.out.println("Password Entered");
+	}
+
+	public static void clickLoginButton() {
+		driver.findElement(loginButton).click();
+		System.out.println("Clicked on Sumbit");
+	}
+}
+---------------------------------------------
+package testCases;
+
+import pages.LoginPage;
+import utilities.WebDriverUtils;
+
+public class HomePageTest extends LoginPage {
+
+	public static void main(String[] args) throws Exception {
+		
+		WebDriverUtils utils = new WebDriverUtils();
+		utils.setUp("http://183.82.103.245/nareshit/login.php");
+		utils.waitSt();
+		//utils.enterUsername("suresh");
+		//LoginPage loginPage=new LoginPage();
+
+		enterUsername("suresh");
+		enterPassword("suresh123");
+		clickLoginButton();
+		Thread.sleep(4000);
+		utils.tearDown();
+	}
+}
+
+
+@Test(dependsOnMethods="tc05")
+@Test(description="Desc Test 2")
+@Test(priority =5)
+@Test (timeOut=200)
+
+
+in xml--under test <groups> <run> <include name="group name"> </include></run></groups>
+
